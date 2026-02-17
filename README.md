@@ -1,6 +1,6 @@
 # Physics Informed Neural Networks (PINN) for satellite state estimation
-Educational repo for learning about physics informed neural networks (PINNs) its application  to 
-estimate the orbit of a satellite flying in geostationary orbit.
+Educational repo for learning about physics informed neural networks (PINNs) and its application  to 
+estimate the orbital state of a satellite flying in geostationary orbit.
 
 ## Problem overview
 The following repo is an attempt to implement this paper by [Varey et al.](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10521414&casa_token=qRdAnbemqw0AAAAA:k8Se-ca4IhB_WpUVeIuZUWhEdUxOT2i97c8MHb1u9JqmxdZ-Wufy7RdmvR01AEhKuY9c6g&tag=1). Fitting an orbit of satellite 
@@ -61,4 +61,26 @@ The initial state guess is then subsequently finetuned every 100 iterations duri
 Training the PINN for 20,000 iterations takes approximately 7 hrs (CPU only).
 
 ## Results
+The plot below shows the residuals obtained for both the physics-only and PINN solutions:
 
+<p align="center">
+  <img src="temp_plots/ra_dec_residuals.png" width="600" alt="Centered Logo">
+</p>
+
+This shows how after a noisy initial state estimation, the residuals are much lower for the PINN compared to the physics-only model.
+
+The next step is to gauge whether the PINN learned an accurate thrust profile or not:
+
+<p align="center">
+  <img src="temp_plots/pinn_thrust_estimate.png" width="600" alt="Centered Logo">
+</p>
+
+While the PINN does _not_ learn the expected sinusoidal thrust profile, at least it a) learns a thrust profile that minimises
+the residuals b) is in the appropiate order of magnitude ($10\text{e-}05 \text{ m/s}^2$).
+
+Ignoring the first 10 hours of the simulation, the CDF of the residuals also show a decrease of the observation residuals
+of the PINN compared to the physics-only model:
+
+<p align="center">
+  <img src="temp_plots/cdf_residuals.png" width="600" alt="Centered Logo">
+</p>
