@@ -18,10 +18,10 @@ to avoid the need of learning the fundamental physics of astrodynamics, and allo
 The ground-truth satellite acceleration can be described as:
 
 $$
-\a = -\frac{GM}{r^3}\mathbf{r} + \mathbf{a}_P + \mathbf{a}_T
+a = -\frac{GM}{r^3}\mathbf{r} + \mathbf{a}_P + \mathbf{a}_T
 $$
 
-Where $\G$ is the gravitational constant, $\M$ is the mass of the primary body (i.e., Earth), $\mathbf{a}_P$ is the acceleration due
+Where $G$ is the gravitational constant, $M$ is the mass of the primary body (i.e., Earth), $\mathbf{a}_P$ is the acceleration due
 to natural perturbing forces (J2 in this simplified scenario. J2 perturbations are 1000 times stronger than the other pertubations due
 to the oblateness of Earth, such as J3-J6), and $\mathbf{a}_T$ is the acceleration due to thrust.
 
@@ -38,5 +38,27 @@ The goal is to learn an arbitrary thrust profile (applied in the intertial frame
   <img src="temp_plots/thrust_profile.png" width="600" alt="Centered Logo">
 </p>
 
-This corresponds to a total $\Delta v \approx 10 \text{ m/s}$
+This corresponds to a total $\Delta V \approx 10 \text{ m/s}$
+
+## Technical approach
+The equation of motion can be broken down into two functions: 
+
+$$
+a = f(t, X) + g(t, X)
+$$
+
+Where $f$ is the physical model incorporating astrodynamics and $g$ is the instantaneous thrust applied by the
+propulsion system. 
+
+The physics-only model is solved using OLS and then the residuals are calculated. The loss function used for training is the 
+mean squared error (MSE) of the observation residuals. The PINN is solved by backpropagating the loss function
+using an ODE solver (TorchDiffEq). The PINN uses a simple DNN with two hidden layers and one hundred neurons in each layer.
+The Adam optimizer is used to tune the DNN parameters, decreasing the learning rate slowly using a fixed-step schedule
+(a more sophisticated approach such as cosine annealing will be implemented in the future).
+
+The initial state is guessed by using the first two noisy observations, and then improved during the OLS solution. 
+The initial state guess is then subsequently finetuned every 100 iterations during the PINN training loop, as done in the paper.
+Training the PINN for 20,000 iterations takes approximately 7 hrs (CPU only).
+
+## Results
 
