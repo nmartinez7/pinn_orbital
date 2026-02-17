@@ -1,5 +1,5 @@
 # Physics Informed Neural Networks (PINN) for satellite state estimation
-Educational repo for learning about physics informed neural networks (PINNs) and its application  to 
+Educational repo for learning about physics informed neural networks (PINNs) and their application  to 
 estimate the orbital state of a satellite flying in geostationary orbit.
 
 ## Problem overview
@@ -13,6 +13,8 @@ Physics informed neural networks (PINNs) are a useful tool for solving this kind
 deep neural networks, which are highly expressive and universal function approximators. This combination should allow the machine learning model
 to avoid the need of learning the fundamental physics of astrodynamics, and allow it to focus on learning the anomalous acceleration dynamics/thrust
 (in theory).
+
+The exercise walk-through is done in the **`pinn_orbital_exploration.ipynb`** jupyter notebook, and the auxiliary functions used in the notebook can be found in **\utils**.
 
 ## Intro
 The ground-truth satellite acceleration can be described as:
@@ -84,3 +86,12 @@ of the PINN compared to the physics-only model:
 <p align="center">
   <img src="temp_plots/cdf_residuals.png" width="600" alt="Centered Logo">
 </p>
+
+However, the absolute position and velocity estimation errors obtained with the PINN after propagating the orbit for a further
+48 hrs are much more modest compared to the ones stated in the paper. 
+
+After 24 hrs, my PINN results in a position error of 94.04 km (vs 124.11 km with the physics-only model), and a
+velocity error of 6.61 m/s (vs 9.85 m/s with the physics-only model).
+
+After 48 hrs, my PINN results in a position error of 155.24 km (vs 235.32 km with the physics-only model), and a
+velocity error of 11.07 m/s (vs 18.03 m/s with the physics-only model).
