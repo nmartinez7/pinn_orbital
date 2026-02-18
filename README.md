@@ -88,10 +88,18 @@ of the PINN compared to the physics-only model:
 </p>
 
 However, the absolute position and velocity estimation errors obtained with the PINN after propagating the orbit for a further
-48 hrs are much more modest compared to the ones stated in the paper. 
+48 hrs are much more modest compared to the ones stated in the paper (they report improvements of 2 orders of magnitude). 
 
 After 24 hrs, my PINN results in a position error of 94.04 km (vs 124.11 km with the physics-only model), and a
 velocity error of 6.61 m/s (vs 9.85 m/s with the physics-only model).
 
 After 48 hrs, my PINN results in a position error of 155.24 km (vs 235.32 km with the physics-only model), and a
 velocity error of 11.07 m/s (vs 18.03 m/s with the physics-only model).
+
+## Additional comments
+* The paper's authors use ~30 observations for training the PINN. I found it extremely difficult to train a PINN with such a limited
+  training set, so I increased the number of observations to 250.
+* The paper doesn'r really specify how the initial state guess is obtained. My approach of using using the first two observations results
+  in an initial guess that is slightly of the mark, affecting the learning of the thrust profile. I wonder if the authors "cheated" by simply
+  using the actual initial state, which should result in a much cleaner/accurate thrust profile. 
+* Any feedback/comments/improvement suggestions are appreciated since this a work in progress, my email is nicolas.martinez717@gmail.com.
